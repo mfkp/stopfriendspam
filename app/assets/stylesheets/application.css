@@ -27,34 +27,45 @@ body, html {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url(/assets/stop-spam.png) no-repeat 50% 20px;
+  background: url(/assets/stop-spam.png) no-repeat 50% 40px;
 }
 
 /*todo: fix this*/
 /*@media all and (-webkit-min-device-pixel-ratio: 1.5) {
   .outer-wrapper {
-    background: url(/assets/stop-spam@2x.png) no-repeat 50% 30px;
+    background: url(/assets/stop-spam@2x.png) no-repeat 50% 40px;
   }
 }*/
 
 .wrapper {
-  max-width: 640px;
-  margin: 10px auto;
-  text-align: center;
+  min-width: 340px;
+  width: 100%;
+  padding: 30px 0;
+  position: absolute;
+  bottom: 0;
+  background: #1e242a;
+  background: rgba(30,36,42,0.93);
 }
 
 .description {
-  background: #414141;
-  padding: 5px;
-  font-size: 1.4em;
+  font-size: 1.1em;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px;
+  letter-spacing: 1px;
+}
+
+.description p {
+  margin: 0;
+  margin-bottom: 5px;
 }
 
 .description a {
   color: white;
 }
 
-.padding {
-  margin-top: 380px;
+#status {
+  font-size: 1.3em;
 }
 
 .user-creds {
@@ -69,20 +80,16 @@ body, html {
   width: 340px;
   height: 72px;
   cursor: pointer;
-  display: inline-block;
-  margin-top: 30px;
+  display: block;
+  margin: 20px auto;
 }
 
 #sign_in:hover {
-  background: url('/assets/login-sprite.png') no-repeat 0 -72px;
-  width: 340px;
-  height: 72px;
+  background-position-y: -72px;
 }
 
 #sign_in:active {
-  background: url('/assets/login-sprite.png') no-repeat 0 -144px;
-  width: 340px;
-  height: 72px;
+  background-position-y: -144px;
 }
 
 /*@media only screen
@@ -99,3 +106,45 @@ and (max-width : 500px) {
     background: url(/assets/stop-spam.png) no-repeat 50% 20px;
   }
 }*/
+
+.spam-list {
+  width: 600px;
+  height: 102px;
+  line-height: 102px;
+  padding-bottom: 10px;
+  list-style: none;
+  color: black;
+  font-weight: normal
+}
+
+.spam-list a {
+  color: black;
+  padding-left: 125px;
+}
+
+.spam-list img {
+  float: right;
+  width: 86px;
+  height: 86px;
+  margin: 8px 5px 0 0;
+}
+
+.spam-list-1 {
+  background: url(/assets/spam-list-1.png) no-repeat;
+}
+
+.spam-list-2 {
+  background: url(/assets/spam-list-2.png) no-repeat;
+}
+
+.spam-list-3 {
+  background: url(/assets/spam-list-3.png) no-repeat;
+}
+
+.spam-list-4 {
+  background: url(/assets/spam-list-4.png) no-repeat;
+}
+
+.spam-list-5 {
+  background: url(/assets/spam-list-5.png) no-repeat;
+}

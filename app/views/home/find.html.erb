@@ -1,7 +1,21 @@
-<div class="padding"></div>
-<h2>Top 5 Spammiest Friends</h2>
-<ol>
-<% @spammer_hash.each do |id, spammer| %>
-  <li><%= link_to "#{spammer['name']}: #{pluralize(spammer['spam_count'], 'spam')}", "https://www.facebook.com/#{spammer['id']}", target: '_blank' %></li>
-<% end %>
-</ol>
+<div class="description">
+  <h2 style="margin-top: 30px; text-align: center;">Top 5 Spammiest Friends</h2>
+  <ul style="padding: 0;">
+  <% @spammer_hash.each_with_index do |(id, spammer), index| %>
+    <li class="spam-list spam-list-<%=index+1%>">
+      <%= link_to spammer['name'], "https://www.facebook.com/#{spammer['id']}", target: '_blank' %>
+      <%= image_tag spammer['pic'] %>
+    </li>
+  <% end %>
+  </ul>
+
+  <div style="text-align: center; padding-bottom: 25px;">
+    <div class="fb-share-button" data-href="http://www.stopfriendspam.com/" data-type="button_count"></div>
+  </div>
+</div>
+
+<style>
+  .outer-wrapper {
+    background: none;
+  }
+</style>

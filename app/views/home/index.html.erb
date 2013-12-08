@@ -1,18 +1,40 @@
-<div class="padding"></div>
-<% if current_user %>
-  <div class="description">
-    <a href="/find">Find my spammy friends</a>
-  </div>
-  <script>
-    window.onload = function() {
-      window.location = '/find';
-    };
-  </script>
-<% else %>
-  <div class="description">
-    <p>Stop Friend Spam lets you know which of your friends spam you the most (via buzzfeed, upworthy, etc).</p>
-    <p>Simply log in with facebook and we'll show you the results.</p>
-    <p>It's up to you if you want to continue being friends afterwards.</p>
-  </div>
-  <%= link_to "", "/auth/facebook", id: "sign_in" %>
-<% end %>
+<div class="wrapper">
+  <% if current_user %>
+    <div class="description" style="text-align: center;">
+      <span id="status">Processing data...</span><br>Please Hold (this should take about 15-20 seconds)
+    </div>
+    <script>
+      window.onload = function() {
+        window.location = '/find';
+      };
+      $(function() {
+        var delay = 3000;
+        var index = 0;
+        var strings = ['Reticulating splines...',
+                       'Crunching numbers...',
+                       'Reading Buzzfeed...',
+                       'Watching grass grow...',
+                       'Adding zeroes and ones...',
+                       'Checking the sports score...',
+                       'Defragmenting hard drive...'];
+        var status = $('#status');
+        var changeStatus = function() {
+          status.fadeOut(300, function() {
+            status.text(strings[index]);
+            status.fadeIn(300);
+          });
+          index++;
+          if (index >= strings.length) index = 0;
+          window.setTimeout(changeStatus, delay);
+        };
+        window.setTimeout(changeStatus, delay);
+      });
+    </script>
+  <% else %>
+    <div class="description">
+      <p><em>Stop Friend Spam</em> lets you know which of your friends spam you the most (via buzzfeed, upworthy, etc).</p>
+      <p>Log in with facebook and we'll show you the results. It's up to you if you want to continue being friends afterwards.</p>
+    </div>
+    <%= link_to "", "/auth/facebook", id: "sign_in" %>
+  <% end %>
+</div>

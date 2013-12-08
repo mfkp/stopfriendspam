@@ -15,7 +15,7 @@ class HomeController < ApplicationController
       feed.each do |item|
         match = nil
         begin
-          match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com/i)
+          match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com|huffingtonpost.com/i)
           if match
             if spammers[item['actor_id']].present?
               spammers[item['actor_id']] += 1
@@ -32,17 +32,29 @@ class HomeController < ApplicationController
       break if counter == 5 || feed.count.zero?
     end
 
+    top_five = spammers.sort_by{|k,v| v}[0..4]
+    top_five_str = top_five.map {|i| i[0]}.join(',')
+
     # get spammer info from fb
     spammer_arr = current_user.facebook.batch do |batch_api|
-      spammers.sort_by{|k,v| v}[0..4].each do |spammer|
+      top_five.each do |spammer|
         batch_api.get_object(spammer[0])
       end
     end
+
+    # get pictures for spammers
+    pics_arr = current_user.facebook.fql_query("SELECT id, pic_square FROM profile WHERE id IN (#{top_five_str})")
 
     spammer_arr.each do |spammer|
       @spammer_hash[spammer['id']] = spammer
       @spammer_hash[spammer['id']]['spam_count'] = spammers[spammer['id'].to_i]
     end
+
+    pics_arr.each do |pic|
+      @spammer_hash[pic['id'].to_s]['pic'] = pic['pic_square']
+      puts pic['pic_square']
+    end
+
     render 'find'
   end
 end
