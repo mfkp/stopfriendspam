@@ -9,6 +9,7 @@ class HomeController < ApplicationController
     spammers = {}
     @spammer_hash = {}
     counter = 0
+    @item_count = 0
 
     loop do
       query = "SELECT actor_id, created_time, post_id, attachment, permalink FROM stream WHERE filter_key IN (SELECT filter_key FROM stream_filter WHERE uid = me() AND name = 'Links') AND created_time < #{current_time} ORDER BY created_time DESC LIMIT 500"
@@ -28,9 +29,10 @@ class HomeController < ApplicationController
         end
       end
       puts feed.count
+      @item_count += feed.count
       current_time = feed.last['created_time'] if feed.count > 0
       counter += 1
-      break if counter == 5 || feed.count.zero? || (Time.now - start) > 20 # if taking more than 20 seconds, deal with what we have
+      break if counter == 5 || feed.count.zero? || (Time.now - start) > 15 # if taking more than 15 seconds, deal with what we have
     end
 
     top_five = spammers.sort_by{|k,v| v}.reverse[0..4]
