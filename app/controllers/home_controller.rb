@@ -32,7 +32,7 @@ class HomeController < ApplicationController
       break if counter == 5 || feed.count.zero?
     end
 
-    top_five = spammers.sort_by{|k,v| v}[0..4]
+    top_five = spammers.sort_by{|k,v| v}.reverse[0..4]
     top_five_str = top_five.map {|i| i[0]}.join(',')
 
     # get spammer info from fb
