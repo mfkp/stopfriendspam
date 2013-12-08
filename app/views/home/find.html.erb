@@ -1,0 +1,7 @@
+<div class="padding"></div>
+<h2>Top 5 Spammiest Friends</h2>
+<ol>
+<% @spammer_hash.each do |id, spammer| %>
+  <li><%= link_to "#{spammer['name']}: #{pluralize(spammer['spam_count'], 'spam')}", "https://www.facebook.com/#{spammer['id']}", target: '_blank' %></li>
+<% end %>
+</ol>

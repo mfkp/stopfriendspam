@@ -1,0 +1,48 @@
+class HomeController < ApplicationController
+  def index
+    render 'index'
+  end
+
+  def find
+    current_time = Time.now.to_i
+    spammers = {}
+    @spammer_hash = {}
+    counter = 0
+
+    loop do
+      query = "SELECT actor_id, created_time, post_id, attachment, permalink FROM stream WHERE filter_key IN (SELECT filter_key FROM stream_filter WHERE uid = me() AND name = 'Links') AND created_time < #{current_time} ORDER BY created_time DESC LIMIT 500"
+      feed = current_user.facebook.fql_query(query)
+      feed.each do |item|
+        match = nil
+        begin
+          match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com/i)
+          if match
+            if spammers[item['actor_id']].present?
+              spammers[item['actor_id']] += 1
+            else
+              spammers[item['actor_id']] = 1
+            end
+          end
+        rescue
+        end
+      end
+      puts feed.count
+      current_time = feed.last['created_time'] if feed.count > 0
+      counter += 1
+      break if counter == 5 || feed.count.zero?
+    end
+
+    # get spammer info from fb
+    spammer_arr = current_user.facebook.batch do |batch_api|
+      spammers.sort_by{|k,v| v}[0..4].each do |spammer|
+        batch_api.get_object(spammer[0])
+      end
+    end
+
+    spammer_arr.each do |spammer|
+      @spammer_hash[spammer['id']] = spammer
+      @spammer_hash[spammer['id']]['spam_count'] = spammers[spammer['id'].to_i]
+    end
+    render 'find'
+  end
+end

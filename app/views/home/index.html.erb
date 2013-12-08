@@ -1,0 +1,18 @@
+<div class="padding"></div>
+<% if current_user %>
+  <div class="description">
+    <a href="/find">Find my spammy friends</a>
+  </div>
+  <script>
+    window.onload = function() {
+      window.location = '/find';
+    };
+  </script>
+<% else %>
+  <div class="description">
+    <p>Stop Friend Spam lets you know which of your friends spam you the most (via buzzfeed, upworthy, etc).</p>
+    <p>Simply log in with facebook and we'll show you the results.</p>
+    <p>It's up to you if you want to continue being friends afterwards.</p>
+  </div>
+  <%= link_to "", "/auth/facebook", id: "sign_in" %>
+<% end %>
