@@ -4,7 +4,8 @@ class HomeController < ApplicationController
   end
 
   def find
-    current_time = Time.now.to_i
+    start = Time.now
+    current_time = start.to_i
     spammers = {}
     @spammer_hash = {}
     counter = 0
@@ -29,7 +30,7 @@ class HomeController < ApplicationController
       puts feed.count
       current_time = feed.last['created_time'] if feed.count > 0
       counter += 1
-      break if counter == 5 || feed.count.zero?
+      break if counter == 5 || feed.count.zero? || (Time.now - start) > 20 # if taking more than 20 seconds, deal with what we have
     end
 
     top_five = spammers.sort_by{|k,v| v}.reverse[0..4]
