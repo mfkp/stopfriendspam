@@ -1,17 +1,19 @@
-<div class="description">
+<div class="description" style="padding-bottom: 120px;">
   <h2 style="margin-top: 30px; text-align: center;">Top Spammiest Friends</h2>
   <ul style="padding: 0;">
   <% @spammer_hash.each_with_index do |(id, spammer), index| %>
     <li class="spam-list spam-list-<%=index+1%>">
-      <%= link_to spammer['name'], "https://www.facebook.com/#{spammer['id']}", target: '_blank' %>
+      <%= link_to spammer['name'], "https://www.facebook.com/#{spammer['id']}", target: '_blank' %>: <%= pluralize(spammer['spam_count'], 'spam links') %>
       <%= image_tag spammer['pic'] %>
     </li>
   <% end %>
   </ul>
-
   <div style="text-align: center;">Processed <%= @item_count %> links from your feed.</div>
+</div>
 
-  <div style="text-align: center; padding-bottom: 25px; margin-top: 5px;">
+<div class="wrapper" style="padding: 15px 0;">
+  <h2 style="text-align: center; margin-top: 0; letter-spacing: 1px;">Please share to help stop spam!</h2>
+  <div style="text-align: center;">
     <div class="fb-share-button" data-href="http://www.stopfriendspam.com/" data-type="button_count" style="line-height: 19px; vertical-align: top;"></div>
     &nbsp;&nbsp;
     <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.stopfriendspam.com/" data-text="Find the friends who spam you the most on Facebook with Stop Friend Spam" data-related="mfkp" data-dnt="true">Tweet</a>
