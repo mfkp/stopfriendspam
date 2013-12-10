@@ -18,8 +18,8 @@ class HomeController < ApplicationController
         feed.each do |item|
           begin
             # the top-secret algorithm
-            match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com|huffingtonpost.com|mashable.com|youtube.com|cheezburger.com/i)
-            if match
+            regex = /upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com|huffingtonpost.com|mashable.com|youtube.com|cheezburger.com/i
+            if item['attachment']['href'].match(regex)
               spammers[item['actor_id']].present? ? spammers[item['actor_id']] += 1 : spammers[item['actor_id']] = 1
             end
           rescue
