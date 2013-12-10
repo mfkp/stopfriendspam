@@ -12,27 +12,28 @@ class HomeController < ApplicationController
     @item_count = 0
 
     loop do
-      query = "SELECT actor_id, created_time, post_id, attachment, permalink FROM stream WHERE filter_key IN (SELECT filter_key FROM stream_filter WHERE uid = me() AND name = 'Links') AND created_time < #{current_time} ORDER BY created_time DESC LIMIT 500"
-      feed = current_user.facebook.fql_query(query)
-      feed.each do |item|
-        match = nil
-        begin
-          match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com|huffingtonpost.com/i)
-          if match
-            if spammers[item['actor_id']].present?
-              spammers[item['actor_id']] += 1
-            else
-              spammers[item['actor_id']] = 1
+      begin
+        query = "SELECT actor_id, created_time, post_id, attachment, permalink FROM stream WHERE filter_key IN (SELECT filter_key FROM stream_filter WHERE uid = me() AND name = 'Links') AND created_time < #{current_time} ORDER BY created_time DESC LIMIT 500"
+        feed = current_user.facebook.fql_query(query)
+        feed.each do |item|
+          begin
+            # the top-secret algorithm
+            match = item['attachment']['href'].match(/upworthy.com|u.pw|buzzfeed.com|gawker.com|distractify.com|huffingtonpost.com/i)
+            if match
+              spammers[item['actor_id']].present? ? spammers[item['actor_id']] += 1 : spammers[item['actor_id']] = 1
             end
+          rescue
+            # just in case there's some weird data, ignore it
           end
-        rescue
         end
+        puts feed.count
+        @item_count += feed.count
+        current_time = feed.last['created_time'] if feed.count > 0
+      rescue Koala::Facebook::APIError => e
+        # ignore error for now, it'll try again until counter gets to 5
       end
-      puts feed.count
-      @item_count += feed.count
-      current_time = feed.last['created_time'] if feed.count > 0
       counter += 1
-      break if counter == 5 || feed.count.zero? || (Time.now - start) > 15 # if taking more than 15 seconds, deal with what we have
+      break if counter == 5 || feed.count.zero? || (Time.now - start) > 20 # if taking more than 20 seconds, deal with what we have
     end
 
     top_five = spammers.sort_by{|k,v| v}.reverse[0..4]
