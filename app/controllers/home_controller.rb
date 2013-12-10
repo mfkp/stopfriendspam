@@ -33,7 +33,7 @@ class HomeController < ApplicationController
         # ignore error for now, it'll try again until counter gets to 5
       end
       counter += 1
-      break if counter == 5 || feed.count.zero? || (Time.now - start) > 20 # if taking more than 20 seconds, deal with what we have
+      break if counter == 5 || (feed.present? && feed.count.zero?) || (Time.now - start) > 20 # if taking more than 20 seconds, deal with what we have
     end
 
     top_five = spammers.sort_by{|k,v| v}.reverse[0..4]
