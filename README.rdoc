@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Stop Friend Spam lets you know which of your friends spam you the most (via buzzfeed, upworthy, etc).
 
-Things you may want to cover:
+Log in with facebook and we'll show you the results. It's up to you if you want to continue being friends afterwards.
 
-* Ruby version
+== GETTING STARTED
 
-* System dependencies
+It's a plain ol' rails app. Just clone, bundle install, and rails s your way to success.
 
-* Configuration
+The only interesting file is probably home_controller.rb. This is where the site filter exists.
 
-* Database creation
+Feel free to improve it, and send in a pull request.
 
-* Database initialization
+== LICENSE
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+MIT License
