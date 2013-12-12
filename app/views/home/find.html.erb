@@ -8,7 +8,11 @@
     </li>
   <% end %>
   </ul>
-  <div style="text-align: center;">Processed <%= @item_count %> links from your feed.</div>
+  <% if @item_count.zero? %>
+    <div style="text-align: center;">We're sorry, we had trouble accessing your facebook feed. You may be way too popular and have way too many posts for us to handle. <em>Sorry!</em></div>
+  <% else %>
+    <div style="text-align: center;">Processed <%= @item_count %> links from your feed.</div>
+  <% end %>
 </div>
 
 <div class="wrapper" style="padding: 15px 0;">
